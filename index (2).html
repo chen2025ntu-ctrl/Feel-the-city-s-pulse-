@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>脉 PULSE · 城市生活探索 Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink-900:#070A12; --ink-850:#0A0E1A; --ink-800:#0D1220; --ink-700:#121829;
+  --ink-650:#161D32; --ink-600:#1B2440; --line:#26304F; --line-soft:#1C2440;
+  --mist:#646E91; --haze:#97A1C4; --snow:#E9EDF9; --white:#FBFCFF;
+  --coral:#FF5B36; --heat-1:#FF3D24; --heat-2:#FF7A33; --heat-3:#FFC24B;
+  --cyan:#27E0BE; --cyan-deep:#0E9C86;
+  --violet:#8C6BFF; --violet-deep:#5E45C9;
+  --accent:var(--coral); --accent-soft:rgba(255,91,54,.14);
+  --f-display:'Space Grotesk','Noto Sans SC',sans-serif;
+  --f-body:'Plus Jakarta Sans','Noto Sans SC',-apple-system,system-ui,sans-serif;
+  --f-mono:'Space Mono','Noto Sans SC',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:var(--f-body); color:var(--snow);
+  background:
+    radial-gradient(120% 70% at 18% -8%, rgba(255,91,54,.10), transparent 55%),
+    radial-gradient(110% 60% at 92% 8%, rgba(140,107,255,.10), transparent 55%),
+    radial-gradient(120% 80% at 50% 120%, rgba(39,224,190,.08), transparent 60%),
+    #05070D;
+  min-height:100vh; display:flex; flex-direction:column; align-items:center;
+  padding:34px 16px 56px; gap:22px;
+}
+::selection{background:rgba(255,91,54,.32)}
+
+.intro{width:min(420px,100%);text-align:center}
+.brand{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--f-display)}
+.brand .glyph{font-size:34px;font-weight:700;letter-spacing:-1px;
+  background:linear-gradient(120deg,#FFD08A,var(--coral) 45%,var(--violet));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand .wm{font-size:15px;font-weight:600;letter-spacing:6px;color:var(--haze)}
+.intro p{margin-top:9px;color:var(--mist);font-size:13px;line-height:1.6}
+.langpill{display:inline-flex;margin:13px auto 0;background:var(--ink-700);border:1px solid var(--line);border-radius:999px;padding:3px}
+.langpill button{font-family:var(--f-body);font-size:11.5px;font-weight:600;color:var(--haze);background:none;border:none;padding:6px 17px;border-radius:999px;cursor:pointer;transition:all .2s}
+.langpill button.on{background:linear-gradient(120deg,var(--coral),var(--violet));color:#fff}
+.intro .lines{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:13px}
+.lines span{font-size:11px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);
+  color:var(--haze);font-weight:500;display:inline-flex;align-items:center;gap:6px}
+.lines span i{width:6px;height:6px;border-radius:50%;display:inline-block}
+.dot-c{background:var(--coral)} .dot-v{background:var(--violet)} .dot-y{background:var(--cyan)}
+
+.phone{width:392px;max-width:100%;height:838px;border-radius:46px;position:relative;background:var(--ink-850);
+  box-shadow:0 0 0 11px #11131c,0 0 0 12px #2a2d3b,0 40px 90px -30px rgba(0,0,0,.9),0 0 120px -40px rgba(255,91,54,.25);
+  overflow:hidden;display:flex;flex-direction:column}
+.statusbar{height:50px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 26px 7px;font-family:var(--f-mono);font-size:13px;letter-spacing:.5px;color:var(--snow);z-index:60;position:relative}
+.notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:104px;height:27px;background:#05070d;border-radius:16px;z-index:61}
+.sb-right{display:flex;gap:7px;align-items:center;opacity:.9}
+.sb-right svg{display:block}
+
+.app{flex:1;position:relative;overflow:hidden;--accent:var(--coral)}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;visibility:hidden;
+  transform:translateY(8px);transition:opacity .32s ease,transform .32s ease,visibility .32s;
+  -webkit-overflow-scrolling:touch;padding-bottom:96px}
+.screen.active{opacity:1;visibility:visible;transform:none}
+.screen::-webkit-scrollbar{display:none}.screen{scrollbar-width:none}
+
+.pad{padding:0 18px}
+.eyebrow{font-family:var(--f-mono);font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--mist)}
+.h1{font-family:var(--f-display);font-weight:700;font-size:25px;letter-spacing:-.5px;line-height:1.1}
+.h2{font-family:var(--f-display);font-weight:600;font-size:16px;letter-spacing:-.2px}
+.sub{color:var(--haze);font-size:12.5px;line-height:1.55}
+.mono{font-family:var(--f-mono)}
+.chip{font-size:11px;padding:4px 9px;border-radius:8px;font-weight:600;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.tag-art{background:rgba(140,107,255,.16);color:#b9a6ff}
+.tag-tech{background:rgba(39,224,190,.14);color:#5eead4}
+.tag-music{background:rgba(255,91,54,.16);color:#ff9576}
+.tag-market{background:rgba(255,194,75,.16);color:#ffce7a}
+.tag-coffee{background:rgba(255,150,90,.14);color:#ffb188}
+.tag-build{background:rgba(150,170,220,.14);color:#aeb9e0}
+.tag-hot{background:linear-gradient(100deg,var(--heat-1),var(--heat-2));color:#fff}
+.tag-new{background:rgba(233,237,249,.1);color:var(--snow)}
+.card{background:var(--ink-700);border:1px solid var(--line-soft);border-radius:18px}
+.btn{font-family:var(--f-body);font-weight:600;font-size:13.5px;border:none;border-radius:13px;padding:13px;cursor:pointer;color:#fff;background:var(--accent);transition:transform .12s,filter .2s}
+.btn:active{transform:scale(.97)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--snow)}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 12px}
+.loc{display:flex;align-items:center;gap:7px;font-weight:600;font-size:14px}
+.loc small{color:var(--mist);font-weight:500}
+.av{width:34px;height:34px;border-radius:50%;background:conic-gradient(from 200deg,#FFB36b,#FF5B36,#8C6BFF,#27E0BE,#FFB36b);padding:2px}
+.av i{display:block;width:100%;height:100%;border-radius:50%;background:var(--ink-700);display:grid;place-items:center;font-size:13px;color:var(--snow);font-weight:700}
+.search{display:flex;align-items:center;gap:9px;background:var(--ink-700);border:1px solid var(--line-soft);border-radius:14px;padding:11px 14px;margin:0 18px 12px;color:var(--mist);font-size:13px}
+
+.mapwrap{position:relative;margin:0 18px 14px;border-radius:22px;overflow:hidden;border:1px solid var(--line);height:330px;background:var(--ink-900)}
+.mapwrap svg{display:block;width:100%;height:100%}
+.heatlayer,.pinlayer{transition:opacity .55s ease}
+.map-mode-pins .heatlayer{opacity:0} .map-mode-pins .pinlayer{opacity:1}
+.map-mode-heat .heatlayer{opacity:1} .map-mode-heat .pinlayer{opacity:0}
+.maptoggle{position:absolute;top:12px;left:12px;display:flex;background:rgba(7,10,18,.72);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:11px;padding:3px;z-index:5}
+.maptoggle button{font-family:var(--f-body);font-size:11.5px;font-weight:600;color:var(--haze);background:none;border:none;padding:7px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:5px}
+.maptoggle button.on{background:var(--coral);color:#fff}
+.maptoggle button.on.heat{background:linear-gradient(100deg,var(--heat-1),var(--heat-2))}
+.maptag{position:absolute;font-family:var(--f-mono);font-size:10px;font-weight:700;letter-spacing:.3px;padding:4px 8px;border-radius:8px;background:rgba(7,10,18,.78);border:1px solid var(--line);white-space:nowrap;z-index:4;pointer-events:none}
+.maptag b{color:var(--heat-3)}
+.you-chip{position:absolute;z-index:4;font-family:var(--f-mono);font-size:9.5px;color:var(--cyan);background:rgba(7,10,18,.8);border:1px solid rgba(39,224,190,.4);padding:3px 7px;border-radius:7px;pointer-events:none}
+.legend{position:absolute;bottom:12px;left:12px;display:flex;gap:10px;font-family:var(--f-mono);font-size:9px;color:var(--haze);background:rgba(7,10,18,.7);padding:6px 9px;border-radius:9px;border:1px solid var(--line);z-index:4}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend i{width:8px;height:8px;border-radius:2px;display:inline-block}
+
+.anomaly{margin:0 18px 16px;border-radius:16px;padding:13px 14px;display:flex;gap:11px;align-items:flex-start;background:linear-gradient(115deg,rgba(255,61,36,.16),rgba(255,122,51,.07));border:1px solid rgba(255,91,54,.32);position:relative;overflow:hidden}
+.anomaly .bolt{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--heat-1),var(--heat-2))}
+.anomaly h4{font-size:13px;font-weight:700;margin-bottom:3px}
+.anomaly p{font-size:11.5px;color:var(--haze);line-height:1.5}
+.anomaly .mult{font-family:var(--f-mono);color:var(--heat-3);font-weight:700}
+
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;padding:4px 18px 11px}
+.sec-head .more{font-size:11.5px;color:var(--accent);font-weight:600}
+.feed{padding:0 18px;display:flex;flex-direction:column;gap:11px}
+.act{display:flex;gap:12px;padding:12px;cursor:pointer;transition:border-color .2s,transform .12s}
+.act:active{transform:scale(.985)}
+.act .thumb{width:62px;height:62px;border-radius:13px;flex:none;position:relative;overflow:hidden}
+.act .body{flex:1;min-width:0}
+.act .row1{display:flex;gap:7px;align-items:center;margin-bottom:5px;flex-wrap:wrap}
+.act h3{font-size:14px;font-weight:600;line-height:1.25;margin-bottom:5px}
+.act .meta{font-family:var(--f-mono);font-size:10.5px;color:var(--mist);display:flex;gap:9px;flex-wrap:wrap}
+.act .meta b{color:var(--cyan)} .act .meta .live{color:var(--heat-2)}
+
+.ph{position:relative;overflow:hidden}
+.ph::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 120% at 70% 10%,transparent,rgba(0,0,0,.34));z-index:1}
+.ph>img.rimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .55s ease;z-index:0}
+.ph>img.rimg.on{opacity:1}
+.ph-teamlab{background:linear-gradient(140deg,#1b1140,#3b1f87 40%,#6b2bb0 70%,#ff5b9c)}
+.ph-rust{background:linear-gradient(140deg,#11202b,#1c3a44 55%,#d97a3a)}
+.ph-coffee{background:linear-gradient(140deg,#2a1a10,#5c3a1f 55%,#caa06a)}
+.ph-music{background:linear-gradient(140deg,#2a0f2c,#7a1f4a 45%,#ff7a33 90%)}
+.ph-expo{background:linear-gradient(140deg,#101a3a,#23408c 50%,#3fd0d0)}
+.ph-arch{background:linear-gradient(140deg,#1a1d26,#3a3f52 60%,#8a93b5)}
+.ph-book{background:linear-gradient(140deg,#241a0f,#5a4326 55%,#cbb27a)}
+.ph-graf{background:linear-gradient(140deg,#0f2233,#1f5a6b 45%,#27e0be)}
+.ph-ucca{background:linear-gradient(140deg,#1a0f2e,#46237a 55%,#b06bd0)}
+
+.searchbig{margin:2px 18px 14px;background:var(--ink-700);border:1px solid var(--line);border-radius:15px;display:flex;align-items:center;gap:10px;padding:13px 15px}
+.searchbig input{flex:1;background:none;border:none;outline:none;color:var(--snow);font-family:var(--f-body);font-size:13.5px}
+.qchips{display:flex;gap:8px;padding:0 18px 16px;flex-wrap:wrap}
+.qchips button{font-family:var(--f-body);font-size:12px;font-weight:600;color:var(--haze);background:var(--ink-700);border:1px solid var(--line-soft);border-radius:999px;padding:8px 14px;cursor:pointer;transition:all .2s}
+.qchips button.on{background:var(--violet);color:#fff;border-color:transparent}
+.match-head{margin:0 18px 12px;padding:14px;border-radius:16px;background:linear-gradient(120deg,rgba(140,107,255,.16),rgba(94,69,201,.06));border:1px solid rgba(140,107,255,.3)}
+.match-head h3{font-size:14.5px;font-weight:700;margin-bottom:4px}
+.match-head p{font-size:11.5px;color:var(--haze);line-height:1.5}
+.match-head .pct{font-family:var(--f-mono);color:#b9a6ff;font-weight:700}
+.venue{margin:0 18px 11px;padding:13px;display:flex;gap:12px;align-items:center;cursor:pointer}
+.venue .rank{font-family:var(--f-mono);font-size:13px;font-weight:700;color:var(--violet);width:18px;flex:none}
+.venue .thumb{width:54px;height:54px;border-radius:12px;flex:none}
+.venue .body{flex:1;min-width:0}
+.venue h4{font-size:13.5px;font-weight:600;margin-bottom:3px}
+.venue .meta{font-family:var(--f-mono);font-size:10px;color:var(--mist)}
+.avstack{display:flex;align-items:center}
+.avstack i{width:21px;height:21px;border-radius:50%;border:2px solid var(--ink-700);margin-left:-7px;font-size:9px;display:grid;place-items:center;font-weight:700;color:#fff}
+.avstack i:first-child{margin-left:0}
+.avstack .cnt{font-family:var(--f-mono);font-size:10px;color:#b9a6ff;margin-left:6px;font-weight:700}
+.circle-card{margin:14px 18px 4px;padding:15px;border-radius:18px;background:var(--ink-700);border:1px solid var(--line);position:relative;overflow:hidden}
+.circle-card .glow{position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(140,107,255,.4),transparent 70%)}
+.circle-card .eyebrow{margin-bottom:9px}
+.circle-card h3{font-size:15px;font-weight:700;margin-bottom:6px;position:relative}
+.circle-card p{font-size:12px;color:var(--haze);line-height:1.5;margin-bottom:13px;position:relative}
+.circle-card .foot{display:flex;align-items:center;justify-content:space-between;position:relative;gap:10px}
+
+.foot-hero{margin:2px 18px 16px;border-radius:22px;overflow:hidden;border:1px solid var(--line);position:relative;height:212px;background:var(--ink-900)}
+.foot-hero svg{width:100%;height:100%;display:block}
+.foot-stats{position:absolute;left:0;right:0;bottom:0;padding:13px 15px;display:flex;justify-content:space-between;background:linear-gradient(0deg,rgba(7,10,18,.92),transparent)}
+.foot-stats .num{font-family:var(--f-mono);font-size:21px;font-weight:700;color:var(--cyan);line-height:1}
+.foot-stats .lab{font-size:10px;color:var(--haze);margin-top:4px}
+.foot-stats .div{width:1px;background:var(--line);margin:2px 0}
+.timeline{padding:0 18px;position:relative}
+.tl-month{font-family:var(--f-mono);font-size:11px;letter-spacing:2px;color:var(--mist);margin:6px 0 12px;display:flex;align-items:center;gap:9px}
+.tl-month::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+.tl-item{display:flex;gap:13px;margin-bottom:16px;cursor:pointer}
+.tl-rail{flex:none;width:14px;display:flex;flex-direction:column;align-items:center;padding-top:5px}
+.tl-rail .node{width:11px;height:11px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(39,224,190,.15)}
+.tl-rail .line{flex:1;width:2px;background:var(--line-soft);margin-top:5px}
+.tl-card{flex:1;min-width:0}
+.tl-card .date{font-family:var(--f-mono);font-size:10px;color:var(--mist);margin-bottom:7px}
+.tl-card .head{display:flex;gap:7px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.tl-card h3{font-size:14px;font-weight:600}
+.tl-card .place{font-size:11.5px;color:var(--haze);margin-bottom:9px;display:flex;align-items:center;gap:5px}
+.tl-photos{display:flex;gap:6px;margin-bottom:9px}
+.tl-photos .ph{width:52px;height:52px;border-radius:10px;flex:none}
+.tl-photos .ph.more{background:var(--ink-600);display:grid;place-items:center;font-family:var(--f-mono);font-size:11px;color:var(--haze)}
+.note{background:var(--ink-800);border:1px solid var(--line-soft);border-radius:12px;padding:10px 12px;display:flex;gap:10px;align-items:center}
+.note.text p{font-size:11.5px;color:var(--snow);line-height:1.5;font-style:italic}
+.note .voicebtn{flex:none;width:28px;height:28px;border-radius:50%;background:var(--cyan);display:grid;place-items:center;cursor:pointer}
+.wave{flex:1;display:flex;align-items:center;gap:2.5px;height:24px}
+.wave span{flex:1;background:rgba(39,224,190,.45);border-radius:2px;min-height:3px}
+.note .dur{font-family:var(--f-mono);font-size:10px;color:var(--haze);flex:none}
+
+.profile{display:flex;align-items:center;gap:14px;padding:6px 18px 18px}
+.profile .pic{width:62px;height:62px;border-radius:50%;background:conic-gradient(from 160deg,#FFB36b,#FF5B36,#8C6BFF,#27E0BE,#FFB36b);padding:3px;flex:none}
+.profile .pic i{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--ink-700);font-size:20px;font-weight:700}
+.profile h2{font-family:var(--f-display);font-size:19px;font-weight:700}
+.profile p{font-size:11.5px;color:var(--mist);font-family:var(--f-mono);margin-top:3px}
+.block{margin:0 18px 16px;padding:16px;border-radius:18px;background:var(--ink-700);border:1px solid var(--line-soft)}
+.block > .eyebrow{margin-bottom:13px;display:block}
+.taste{display:flex;flex-direction:column;gap:11px}
+.taste .row{display:flex;align-items:center;gap:11px}
+.taste .nm{width:84px;font-size:12px;font-weight:600;flex:none}
+.taste .bar{flex:1;height:7px;border-radius:4px;background:var(--ink-850);overflow:hidden}
+.taste .bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--violet),var(--coral))}
+.taste .v{font-family:var(--f-mono);font-size:10.5px;color:var(--haze);width:24px;text-align:right;flex:none}
+.learn{margin-top:13px;font-size:10.5px;color:var(--mist);display:flex;align-items:center;gap:6px;line-height:1.4}
+.seg{display:flex;background:var(--ink-850);border-radius:12px;padding:4px;gap:4px;margin-bottom:14px}
+.seg button{flex:1;font-family:var(--f-body);font-size:12.5px;font-weight:600;color:var(--haze);background:none;border:none;padding:9px;border-radius:9px;cursor:pointer}
+.seg button.on{background:var(--cyan);color:#062b25}
+.seg.lang button.on{background:linear-gradient(120deg,var(--coral),var(--violet));color:#fff}
+.optrow{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid var(--line-soft)}
+.optrow:first-of-type{border-top:none}
+.optrow .t{font-size:13px;font-weight:600}
+.optrow .d{font-size:11px;color:var(--mist);margin-top:2px}
+.toggle{width:42px;height:25px;border-radius:999px;background:var(--ink-600);position:relative;cursor:pointer;flex:none;transition:background .2s}
+.toggle i{position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:left .2s}
+.toggle.on{background:var(--cyan)} .toggle.on i{left:20px}
+.preview{margin:2px 18px 0;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(170deg,var(--ink-700),var(--ink-850))}
+.preview .pv-top{padding:15px 16px;display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--line-soft)}
+.preview .pv-top .pic{width:38px;height:38px;border-radius:50%;background:conic-gradient(from 160deg,#FF5B36,#8C6BFF,#27E0BE,#FF5B36);padding:2px}
+.preview .pv-top .pic i{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:var(--ink-700);font-size:13px;font-weight:700}
+.preview .pv-top .name{font-size:13.5px;font-weight:700}
+.preview .pv-top .span{font-family:var(--f-mono);font-size:10px;color:var(--cyan);margin-top:2px}
+.pv-sec{padding:13px 16px}
+.pv-sec .lab{font-family:var(--f-mono);font-size:9.5px;letter-spacing:1.5px;color:var(--mist);margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.pv-trail{display:flex;gap:6px;margin-bottom:3px}
+.pv-trail .ph{width:46px;height:46px;border-radius:9px;flex:none}
+.pv-future{display:flex;gap:10px;align-items:center;padding:11px;border-radius:13px;background:rgba(39,224,190,.07);border:1px dashed rgba(39,224,190,.4)}
+.pv-future .ic{flex:none;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--cyan-deep));display:grid;place-items:center}
+.pv-future h5{font-size:12.5px;font-weight:700}
+.pv-future p{font-size:10.5px;color:var(--haze);margin-top:2px}
+.pv-invite{margin:13px 16px 16px;padding:12px;border-radius:13px;text-align:center;font-size:12.5px;font-weight:700;background:linear-gradient(100deg,var(--cyan-deep),var(--cyan));color:#062b25;cursor:pointer}
+
+.tabbar{position:absolute;bottom:0;left:0;right:0;height:82px;display:flex;align-items:flex-start;justify-content:space-around;padding:11px 14px 0;background:linear-gradient(0deg,var(--ink-850) 55%,rgba(10,14,26,.85) 80%,transparent);backdrop-filter:blur(14px);z-index:50;border-top:1px solid var(--line-soft)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:none;cursor:pointer;color:var(--mist);font-family:var(--f-body);font-size:10px;font-weight:600;width:60px;transition:color .2s}
+.tab svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab.on[data-acc=coral]{color:var(--coral)} .tab.on[data-acc=violet]{color:var(--violet)}
+.tab.on[data-acc=cyan]{color:var(--cyan)} .tab.on[data-acc=snow]{color:var(--snow)}
+
+.overlay{position:absolute;inset:0;z-index:80;background:var(--ink-850);transform:translateY(101%);transition:transform .38s cubic-bezier(.4,0,.2,1);overflow-y:auto;padding-bottom:30px}
+.overlay.open{transform:none}
+.overlay::-webkit-scrollbar{display:none}.overlay{scrollbar-width:none}
+.ov-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;background:linear-gradient(0deg,transparent,var(--ink-850) 40%)}
+.ov-close{width:34px;height:34px;border-radius:50%;background:rgba(7,10,18,.6);border:1px solid var(--line);display:grid;place-items:center;cursor:pointer;color:var(--snow)}
+.ov-hero{height:230px;position:relative}
+.ov-hero .ph{position:absolute;inset:0}
+.ov-hero .scrim{position:absolute;inset:0;background:linear-gradient(0deg,var(--ink-850),transparent 55%)}
+.ov-body{padding:0 18px;margin-top:-46px;position:relative}
+.ov-body h1{font-family:var(--f-display);font-size:23px;font-weight:700;line-height:1.15;margin:9px 0 9px}
+.ov-meta{display:flex;flex-wrap:wrap;gap:8px 14px;font-family:var(--f-mono);font-size:11px;color:var(--haze);margin-bottom:16px}
+.ov-meta span{display:flex;align-items:center;gap:5px}
+.ov-gallery{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin:0 -18px 16px;padding-left:18px}
+.ov-gallery::-webkit-scrollbar{display:none}
+.ov-gallery .ph{width:120px;height:150px;border-radius:14px;flex:none}
+.ov-sec-lab{font-family:var(--f-mono);font-size:10px;letter-spacing:2px;color:var(--mist);margin-bottom:10px}
+.ov-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.ov-actions .btn{padding:14px}
+.fullw{grid-column:1 / -1}
+.mini-map{height:118px;border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-bottom:16px}
+.mini-map svg{width:100%;height:100%;display:block}
+.attendees{display:flex;align-items:center;gap:10px;padding:13px;border-radius:14px;background:var(--ink-700);border:1px solid var(--line-soft);margin-bottom:14px}
+
+.route-od{margin:0 18px 14px;padding:14px;border-radius:16px;background:var(--ink-700);border:1px solid var(--line-soft)}
+.route-od .leg{display:flex;align-items:center;gap:11px;font-size:13px}
+.route-od .leg .dotline{display:flex;flex-direction:column;align-items:center}
+.route-od .leg .d{width:9px;height:9px;border-radius:50%}
+.route-od .leg .d.start{background:var(--cyan)} .route-od .leg .d.end{background:var(--coral)}
+.route-od .leg .seg2{width:2px;height:18px;background:var(--line);margin:2px 0}
+.route-od .leg b{font-weight:600} .route-od .leg small{color:var(--mist);font-family:var(--f-mono);font-size:10px}
+.route-seg{display:flex;background:var(--ink-850);border-radius:13px;padding:4px;gap:4px;margin:0 18px 14px}
+.route-seg button{flex:1;font-family:var(--f-body);font-weight:600;font-size:13px;color:var(--haze);background:none;border:none;padding:11px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+.route-seg button small{font-weight:500;font-size:9.5px;color:var(--mist);font-family:var(--f-mono)}
+.route-seg button.on{background:var(--coral);color:#fff}
+.route-seg button.on small{color:rgba(255,255,255,.8)}
+.route-map{margin:0 18px 14px;height:230px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--ink-900);position:relative}
+.route-map svg{width:100%;height:100%;display:block}
+.route-summary{position:absolute;top:12px;left:12px;font-family:var(--f-mono);font-size:11px;background:rgba(7,10,18,.78);border:1px solid var(--line);border-radius:10px;padding:7px 11px;color:var(--snow)}
+.route-summary b{color:var(--coral)}
+.poi-head{display:flex;align-items:baseline;justify-content:space-between;padding:2px 18px 11px}
+.poi-head .cnt{font-family:var(--f-mono);font-size:11px;color:var(--coral);font-weight:700}
+.poi{margin:0 18px 10px;padding:12px;display:flex;gap:12px;align-items:center}
+.poi .thumb{width:48px;height:48px;border-radius:11px;flex:none}
+.poi .body{flex:1;min-width:0}
+.poi h4{font-size:13px;font-weight:600;margin-bottom:4px}
+.poi .meta{font-family:var(--f-mono);font-size:10px;color:var(--mist);display:flex;gap:8px;align-items:center}
+.poi .meta .m{color:#b9a6ff}
+.poi .add{flex:none;width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:var(--ink-800);color:var(--snow);display:grid;place-items:center;cursor:pointer;font-size:18px;transition:all .2s}
+.poi .add.added{background:var(--cyan);border-color:transparent;color:#062b25}
+.route-explain{margin:2px 18px 0;font-size:11px;color:var(--mist);line-height:1.55;display:flex;gap:7px}
+.route-direct-note{margin:4px 18px 0;font-size:11.5px;color:var(--haze);text-align:center;padding:18px}
+
+@keyframes ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+@keyframes breathe{0%,100%{opacity:.85}50%{opacity:1}}
+.pin-ring{transform-origin:center;animation:ring 2.6s ease-out infinite}
+.heat-breathe{animation:breathe 4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.pin-ring,.heat-breathe{animation:none}}
+
+.hint{text-align:center;font-size:11px;color:var(--mist);margin-top:2px;width:min(420px,100%)}
+.hint b{color:var(--haze);font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <div class="brand"><span class="glyph">脉</span><span class="wm">PULSE</span></div>
+  <div class="langpill">
+    <button data-lang="zh" onclick="setLang('zh')">中文</button>
+    <button data-lang="en" onclick="setLang('en')">English</button>
+  </div>
+  <p data-i18n-html="intro_tagline"></p>
+  <div class="lines">
+    <span><i class="dot-c"></i><span data-i18n="line_explore"></span></span>
+    <span><i class="dot-y"></i><span data-i18n="line_record"></span></span>
+    <span><i class="dot-v"></i><span data-i18n="line_social"></span></span>
+  </div>
+</div>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span>21:18</span>
+    <div class="sb-right">
+      <svg width="17" height="12" viewBox="0 0 17 12"><rect x="0" y="7" width="3" height="5" rx="1" fill="#E9EDF9"/><rect x="4.5" y="4.5" width="3" height="7.5" rx="1" fill="#E9EDF9"/><rect x="9" y="2" width="3" height="10" rx="1" fill="#E9EDF9"/><rect x="13.5" y="0" width="3" height="12" rx="1" fill="#E9EDF9" opacity=".4"/></svg>
+      <svg width="22" height="12" viewBox="0 0 22 12"><rect x="0.5" y="0.5" width="18" height="11" rx="3" fill="none" stroke="#E9EDF9" opacity=".5"/><rect x="2" y="2" width="13" height="8" rx="1.5" fill="#E9EDF9"/><rect x="19.5" y="3.5" width="2" height="5" rx="1" fill="#E9EDF9" opacity=".6"/></svg>
+    </div>
+  </div>
+
+  <div class="app" id="app">
+
+    <!-- ============ EXPLORE ============ -->
+    <section class="screen active" id="s-explore">
+      <div class="topbar">
+        <div class="loc">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <span data-i18n="loc_city"></span> <small data-i18n="loc_road"></small>
+        </div>
+        <div class="av"><i data-i18n="mono"></i></div>
+      </div>
+      <div class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <span data-i18n="search_ph"></span>
+      </div>
+
+      <div class="mapwrap map-mode-pins" id="mapwrap">
+        <svg viewBox="0 0 356 330" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="heatA" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFE08A" stop-opacity=".95"/><stop offset="22%" stop-color="#FF3D24" stop-opacity=".85"/><stop offset="55%" stop-color="#FF3D24" stop-opacity=".32"/><stop offset="100%" stop-color="#FF3D24" stop-opacity="0"/></radialGradient>
+            <radialGradient id="heatB" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFC24B" stop-opacity=".9"/><stop offset="35%" stop-color="#FF7A33" stop-opacity=".55"/><stop offset="100%" stop-color="#FF7A33" stop-opacity="0"/></radialGradient>
+            <filter id="soft"><feGaussianBlur stdDeviation="3.2"/></filter>
+          </defs>
+          <rect width="356" height="330" fill="#070A12"/>
+          <path d="M250 -10 C 230 60, 300 110, 260 180 C 230 240, 300 290, 270 340 L356 340 L356 -10 Z" fill="#0B1426"/>
+          <path d="M250 -10 C 230 60, 300 110, 260 180 C 230 240, 300 290, 270 340" fill="none" stroke="#16335a" stroke-width="1" opacity=".6"/>
+          <g stroke="#1b2440" stroke-width="2" fill="none"><path d="M-10 90 L240 80"/><path d="M-10 170 L250 175"/><path d="M-10 250 L250 255"/><path d="M70 -10 L80 340"/><path d="M150 -10 L165 340"/><path d="M30 -10 L20 340" opacity=".6"/></g>
+          <g stroke="#283154" stroke-width="3" fill="none"><path d="M-10 130 L255 138"/><path d="M115 -10 L125 340"/></g>
+          <g fill="#0e1424" opacity=".7"><rect x="30" y="92" width="35" height="34" rx="3"/><rect x="85" y="94" width="55" height="32" rx="3"/><rect x="30" y="180" width="40" height="60" rx="3"/><rect x="130" y="185" width="28" height="62" rx="3"/><rect x="170" y="95" width="40" height="38" rx="3"/></g>
+          <g class="heatlayer">
+            <ellipse class="heat-breathe" cx="205" cy="240" rx="78" ry="70" fill="url(#heatA)" filter="url(#soft)"/>
+            <ellipse class="heat-breathe" cx="100" cy="115" rx="55" ry="48" fill="url(#heatB)" filter="url(#soft)" style="animation-delay:1s"/>
+            <ellipse class="heat-breathe" cx="60" cy="205" rx="40" ry="36" fill="url(#heatB)" filter="url(#soft)" style="animation-delay:2s" opacity=".8"/>
+          </g>
+          <g class="pinlayer">
+            <g transform="translate(205,235)"><circle class="pin-ring" r="9" fill="none" stroke="#FF5B36" stroke-width="2"/><circle r="6" fill="#FF5B36"/><circle r="2.5" fill="#fff"/></g>
+            <g transform="translate(100,118)"><circle class="pin-ring" r="9" fill="none" stroke="#8C6BFF" stroke-width="2" style="animation-delay:.8s"/><circle r="6" fill="#8C6BFF"/><circle r="2.5" fill="#fff"/></g>
+            <g transform="translate(60,205)"><circle r="5.5" fill="#FFC24B"/><circle r="2.2" fill="#fff"/></g>
+            <g transform="translate(150,90)"><circle r="5.5" fill="#27E0BE"/><circle r="2.2" fill="#fff"/></g>
+            <g transform="translate(175,160)"><circle r="5.5" fill="#FF7A33"/><circle r="2.2" fill="#fff"/></g>
+          </g>
+          <g transform="translate(45,150)"><circle class="pin-ring" r="8" fill="none" stroke="#27E0BE" stroke-width="1.5"/><circle r="5" fill="#27E0BE"/><circle r="2" fill="#062b25"/></g>
+        </svg>
+        <div class="maptoggle">
+          <button id="mt-live" class="on" onclick="setMap('pins')">● <span data-i18n="mt_live"></span></button>
+          <button id="mt-heat" onclick="setMap('heat')">▲ <span data-i18n="mt_heat"></span></button>
+        </div>
+        <div class="you-chip" style="left:6px;top:50%" data-i18n="you_here"></div>
+        <div class="maptag heat-only" style="right:14px;bottom:64px;display:none" data-i18n-html="mt_westbund"></div>
+        <div class="maptag heat-only" style="left:60px;top:80px;display:none" data-i18n-html="mt_julu"></div>
+        <div class="maptag heat-only" style="left:8px;top:166px;display:none" data-i18n-html="mt_anfu"></div>
+        <div class="legend heat-only" style="display:none">
+          <span><i style="background:#FF3D24"></i><span data-i18n="leg_peak"></span></span>
+          <span><i style="background:#FF7A33"></i><span data-i18n="leg_busy"></span></span>
+          <span><i style="background:#FFC24B"></i><span data-i18n="leg_rising"></span></span>
+        </div>
+      </div>
+
+      <div class="anomaly" onclick="navigate('detail/expo')">
+        <div class="bolt"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></div>
+        <div>
+          <h4 data-i18n="anomaly_h4"></h4>
+          <p data-i18n-html="anomaly_p"></p>
+        </div>
+      </div>
+
+      <div class="sec-head">
+        <div class="eyebrow" data-i18n="sec_live"></div>
+        <span class="more" data-i18n="more_week"></span>
+      </div>
+      <div class="feed" id="explore-feed"></div>
+    </section>
+
+    <!-- ============ TRIBE ============ -->
+    <section class="screen" id="s-tribe">
+      <div class="topbar">
+        <div><div class="eyebrow" style="margin-bottom:3px" data-i18n="tribe_eyebrow"></div><div class="h1" style="font-size:22px" data-i18n-html="tribe_h1"></div></div>
+      </div>
+      <div class="searchbig">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input id="tribe-input" readonly>
+      </div>
+      <div class="qchips" id="tribe-chips">
+        <button class="on" data-topic="art" onclick="setTribe('art')" data-i18n="chip_art"></button>
+        <button data-topic="tech" onclick="setTribe('tech')" data-i18n="chip_tech"></button>
+        <button data-topic="music" onclick="setTribe('music')" data-i18n="chip_music"></button>
+        <button data-topic="market" onclick="setTribe('market')" data-i18n="chip_market"></button>
+      </div>
+      <div class="match-head" id="tribe-head"></div>
+      <div class="sec-head"><div class="eyebrow" data-i18n="tribe_sec"></div></div>
+      <div id="tribe-list"></div>
+      <div class="circle-card">
+        <div class="glow"></div>
+        <div class="eyebrow" data-i18n="circle_eyebrow"></div>
+        <h3 id="circle-title"></h3>
+        <p id="circle-desc"></p>
+        <div class="foot">
+          <div class="avstack">
+            <i style="background:#FF5B36">J</i><i style="background:#8C6BFF">M</i><i style="background:#27E0BE">Y</i><i style="background:#FFB36b">K</i>
+            <span class="cnt" id="circle-cnt"></span>
+          </div>
+          <button class="btn" style="padding:9px 16px;background:var(--violet)" onclick="toast(K('t_join'))" data-i18n="circle_join"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTPRINTS ============ -->
+    <section class="screen" id="s-foot">
+      <div class="topbar">
+        <div><div class="eyebrow" style="margin-bottom:3px" data-i18n="foot_eyebrow"></div><div class="h1" style="font-size:22px" data-i18n="foot_h1"></div></div>
+        <div class="av"><i data-i18n="mono"></i></div>
+      </div>
+      <div class="foot-hero">
+        <svg viewBox="0 0 356 212" preserveAspectRatio="xMidYMid slice">
+          <defs><filter id="soft2"><feGaussianBlur stdDeviation="2.4"/></filter>
+            <radialGradient id="glowY" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#27E0BE" stop-opacity=".55"/><stop offset="100%" stop-color="#27E0BE" stop-opacity="0"/></radialGradient></defs>
+          <rect width="356" height="212" fill="#070A12"/>
+          <g stroke="#16203a" stroke-width="1.5" fill="none"><path d="M-10 60 L370 55"/><path d="M-10 130 L370 138"/><path d="M90 -10 L100 220"/><path d="M220 -10 L210 220"/><path d="M300 -10 L312 220"/></g>
+          <path d="M40 160 L110 70 L180 120 L250 50 L300 110" fill="none" stroke="#27E0BE" stroke-width="1.4" stroke-dasharray="4 5" opacity=".55"/>
+          <g><circle cx="40" cy="160" r="22" fill="url(#glowY)" filter="url(#soft2)"/><circle cx="110" cy="70" r="26" fill="url(#glowY)" filter="url(#soft2)"/><circle cx="180" cy="120" r="20" fill="url(#glowY)" filter="url(#soft2)"/><circle cx="250" cy="50" r="30" fill="url(#glowY)" filter="url(#soft2)"/><circle cx="300" cy="110" r="18" fill="url(#glowY)" filter="url(#soft2)"/></g>
+          <g fill="#27E0BE"><circle cx="40" cy="160" r="4"/><circle cx="110" cy="70" r="5"/><circle cx="180" cy="120" r="4"/><circle cx="250" cy="50" r="5.5"/><circle cx="300" cy="110" r="4"/></g>
+        </svg>
+        <div class="foot-stats">
+          <div class="st"><div class="num">47</div><div class="lab" data-i18n="stat_places"></div></div>
+          <div class="div"></div>
+          <div class="st"><div class="num">31</div><div class="lab" data-i18n="stat_events"></div></div>
+          <div class="div"></div>
+          <div class="st"><div class="num">9</div><div class="lab" data-i18n="stat_corners"></div></div>
+        </div>
+      </div>
+      <div class="timeline" id="foot-timeline"></div>
+    </section>
+
+    <!-- ============ ME / SHARE ============ -->
+    <section class="screen" id="s-me">
+      <div class="topbar" style="padding-top:14px"><div class="eyebrow" data-i18n="me_eyebrow"></div></div>
+      <div class="profile">
+        <div class="pic"><i data-i18n="mono"></i></div>
+        <div><h2 data-i18n="profile_name"></h2><p data-i18n="profile_meta"></p></div>
+      </div>
+
+      <div class="block">
+        <span class="eyebrow" data-i18n="lang_eyebrow"></span>
+        <div class="seg lang" id="lang-seg">
+          <button data-lang="zh" onclick="setLang('zh')">中文</button>
+          <button data-lang="en" onclick="setLang('en')">English</button>
+        </div>
+        <div class="learn" style="margin-top:0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--violet)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20"/></svg><span data-i18n="lang_note"></span></div>
+      </div>
+
+      <div class="block">
+        <span class="eyebrow" data-i18n="taste_eyebrow"></span>
+        <div class="taste">
+          <div class="row"><span class="nm" data-i18n="taste_art"></span><span class="bar"><i style="width:92%"></i></span><span class="v">92</span></div>
+          <div class="row"><span class="nm" data-i18n="taste_music"></span><span class="bar"><i style="width:78%"></i></span><span class="v">78</span></div>
+          <div class="row"><span class="nm" data-i18n="taste_tech"></span><span class="bar"><i style="width:71%"></i></span><span class="v">71</span></div>
+          <div class="row"><span class="nm" data-i18n="taste_coffee"></span><span class="bar"><i style="width:64%"></i></span><span class="v">64</span></div>
+          <div class="row"><span class="nm" data-i18n="taste_arch"></span><span class="bar"><i style="width:53%"></i></span><span class="v">53</span></div>
+        </div>
+        <div class="learn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/></svg><span data-i18n="taste_note"></span></div>
+      </div>
+
+      <div class="block">
+        <span class="eyebrow" data-i18n="share_eyebrow"></span>
+        <div style="font-size:11.5px;color:var(--haze);line-height:1.55;margin-bottom:13px" data-i18n="share_desc"></div>
+        <div class="seg" id="share-seg">
+          <button data-span="week" onclick="setSpan('week')" data-i18n="span_week"></button>
+          <button data-span="month" class="on" onclick="setSpan('month')" data-i18n="span_month"></button>
+          <button data-span="year" onclick="setSpan('year')" data-i18n="span_year"></button>
+        </div>
+        <div class="optrow"><div><div class="t" data-i18n="opt_fav_t"></div><div class="d" data-i18n="opt_fav_d"></div></div><div class="toggle on" id="tg-fav" onclick="tg('tg-fav')"><i></i></div></div>
+        <div class="optrow"><div><div class="t" data-i18n="opt_up_t"></div><div class="d" data-i18n="opt_up_d"></div></div><div class="toggle on" id="tg-up" onclick="tg('tg-up')"><i></i></div></div>
+        <div class="optrow"><div><div class="t" data-i18n="opt_exp_t"></div><div class="d" data-i18n="opt_exp_d"></div></div><div class="toggle" id="tg-exp" onclick="tg('tg-exp')"><i></i></div></div>
+        <button class="btn" style="width:100%;margin-top:14px;background:var(--cyan);color:#062b25" onclick="navigate('share')" data-i18n="share_btn"></button>
+      </div>
+    </section>
+
+    <!-- ============ OVERLAY: DETAIL ============ -->
+    <div class="overlay" id="ov-detail"></div>
+
+    <!-- ============ OVERLAY: ROUTE ============ -->
+    <div class="overlay" id="ov-route">
+      <div class="ov-bar">
+        <div><div class="eyebrow" data-i18n="route_eyebrow"></div><div class="h2" style="margin-top:3px" data-i18n="route_title"></div></div>
+        <div class="ov-close" onclick="closeTo()">✕</div>
+      </div>
+      <div class="route-od">
+        <div class="leg"><div class="dotline"><span class="d start"></span><span class="seg2"></span><span class="d end"></span></div>
+          <div style="display:flex;flex-direction:column;gap:14px;flex:1">
+            <div><b data-i18n="route_from"></b> · <small data-i18n="route_from_sub"></small></div>
+            <div><b data-i18n="route_to"></b> · <small data-i18n="route_to_sub"></small></div>
+          </div>
+        </div>
+      </div>
+      <div class="route-seg">
+        <button id="rm-explore" class="on" onclick="setRoute('explore')"><span data-i18n="rm_explore"></span><small data-i18n="rm_explore_sub"></small></button>
+        <button id="rm-direct" onclick="setRoute('direct')"><span data-i18n="rm_direct"></span><small data-i18n="rm_direct_sub"></small></button>
+      </div>
+      <div class="route-map">
+        <svg viewBox="0 0 320 230" preserveAspectRatio="xMidYMid slice">
+          <rect width="320" height="230" fill="#070A12"/>
+          <g stroke="#1b2440" stroke-width="2" fill="none"><path d="M-10 70 L330 60"/><path d="M-10 150 L330 158"/><path d="M80 -10 L92 240"/><path d="M210 -10 L200 240"/></g>
+          <g fill="#0e1424" opacity=".7"><rect x="40" y="80" width="40" height="40" rx="3"/><rect x="120" y="75" width="50" height="38" rx="3"/><rect x="150" y="150" width="44" height="46" rx="3"/></g>
+          <path id="path-direct" d="M40 185 L270 45" fill="none" stroke="#FF5B36" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 7" opacity="0"/>
+          <path id="path-explore" d="M40 185 C 70 150, 60 110, 110 100 C 160 90, 150 60, 200 70 C 240 78, 240 50, 270 45" fill="none" stroke="#FF5B36" stroke-width="3" stroke-linecap="round"/>
+          <g id="poi-markers">
+            <g transform="translate(85,118)"><circle r="7" fill="#161D32" stroke="#8C6BFF" stroke-width="2"/><circle r="3" fill="#8C6BFF"/></g>
+            <g transform="translate(150,82)"><circle r="7" fill="#161D32" stroke="#8C6BFF" stroke-width="2"/><circle r="3" fill="#8C6BFF"/></g>
+            <g transform="translate(205,68)"><circle r="7" fill="#161D32" stroke="#8C6BFF" stroke-width="2"/><circle r="3" fill="#8C6BFF"/></g>
+            <g transform="translate(240,55)"><circle r="7" fill="#161D32" stroke="#8C6BFF" stroke-width="2"/><circle r="3" fill="#8C6BFF"/></g>
+          </g>
+          <g transform="translate(40,185)"><circle r="6" fill="#27E0BE"/><circle r="2.5" fill="#062b25"/></g>
+          <g transform="translate(270,45)"><circle class="pin-ring" r="9" fill="none" stroke="#FF5B36" stroke-width="2"/><circle r="6" fill="#FF5B36"/><circle r="2.5" fill="#fff"/></g>
+        </svg>
+        <div class="route-summary" id="route-summary"></div>
+      </div>
+      <div id="route-explore-body">
+        <div class="poi-head"><div class="eyebrow" data-i18n="poi_eyebrow"></div><span class="cnt" id="poi-count"></span></div>
+        <div id="poi-list"></div>
+        <div class="route-explain"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span data-i18n="route_explain"></span></div>
+        <button class="btn" style="margin:16px 18px 0;width:calc(100% - 36px)" onclick="startRoute()" data-i18n="route_start_ex"></button>
+      </div>
+      <div id="route-direct-body" style="display:none">
+        <div class="route-direct-note" data-i18n="route_direct_note"></div>
+        <button class="btn" style="margin:0 18px;width:calc(100% - 36px)" onclick="startRoute()" data-i18n="route_start_dir"></button>
+      </div>
+    </div>
+
+    <!-- ============ OVERLAY: SHARE ============ -->
+    <div class="overlay" id="ov-share">
+      <div class="ov-bar">
+        <div><div class="eyebrow" data-i18n="share_pv_eyebrow"></div><div class="h2" style="margin-top:3px" data-i18n="share_pv_h2"></div></div>
+        <div class="ov-close" onclick="closeTo()">✕</div>
+      </div>
+      <div class="preview">
+        <div class="pv-top">
+          <div class="pic"><i data-i18n="mono"></i></div>
+          <div style="flex:1"><div class="name" data-i18n="share_pv_name"></div><div class="span" id="pv-span"></div></div>
+        </div>
+        <div class="pv-sec">
+          <div class="lab"><i style="width:6px;height:6px;border-radius:50%;background:var(--cyan);display:inline-block"></i><span data-i18n="pv_foot"></span></div>
+          <div class="pv-trail"><div class="ph ph-teamlab"></div><div class="ph ph-rust"></div><div class="ph ph-coffee"></div><div class="ph ph-music"></div><div class="ph ph-graf"></div></div>
+        </div>
+        <div class="pv-sec" id="pv-fav">
+          <div class="lab"><i style="width:6px;height:6px;border-radius:50%;background:var(--violet);display:inline-block"></i><span data-i18n="pv_fav"></span></div>
+          <div class="venue card" style="margin:0;padding:11px">
+            <div class="thumb ph ph-ucca"></div>
+            <div class="body"><h4 data-i18n="pv_fav_name"></h4><div class="meta" data-i18n="pv_fav_meta"></div></div>
+            <span class="chip tag-art" data-i18n="pv_fav_chip"></span>
+          </div>
+        </div>
+        <div class="pv-sec" id="pv-up">
+          <div class="lab"><i style="width:6px;height:6px;border-radius:50%;background:var(--cyan);display:inline-block"></i><span data-i18n="pv_up"></span></div>
+          <div class="pv-future">
+            <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#062b25" stroke-width="2.2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
+            <div style="flex:1"><h5 data-i18n="pv_up_name"></h5><p data-i18n="pv_up_meta"></p></div>
+          </div>
+        </div>
+        <div class="pv-invite" onclick="toast(K('t_invite'))" data-i18n="pv_invite"></div>
+      </div>
+      <button class="btn" style="margin:18px 18px 0;width:calc(100% - 36px);background:var(--cyan);color:#062b25" onclick="toast(K('t_copy'))" data-i18n="share_copy"></button>
+      <div class="hint" style="margin:12px 18px 0;line-height:1.5;width:auto" data-i18n="share_pv_hint"></div>
+    </div>
+
+  </div><!-- /app -->
+
+  <div class="tabbar">
+    <button class="tab on" data-acc="coral" id="tab-explore" onclick="navigate('explore')">
+      <svg viewBox="0 0 24 24"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span data-i18n="tab_explore"></span></button>
+    <button class="tab" data-acc="violet" id="tab-tribe" onclick="navigate('tribe')">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5"/><circle cx="17" cy="10" r="2.6"/><path d="M14 20c0-3 2-4.7 4.5-4.7"/></svg><span data-i18n="tab_tribe"></span></button>
+    <button class="tab" data-acc="cyan" id="tab-foot" onclick="navigate('foot')">
+      <svg viewBox="0 0 24 24"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><path d="M9 10l2 2 4-4"/></svg><span data-i18n="tab_foot"></span></button>
+    <button class="tab" data-acc="snow" id="tab-me" onclick="navigate('me')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5"/></svg><span data-i18n="tab_me"></span></button>
+  </div>
+</div>
+
+<div class="hint" data-i18n-html="bottom_hint"></div>
+
+<div id="toast" style="position:fixed;left:50%;bottom:46px;transform:translateX(-50%) translateY(20px);opacity:0;background:rgba(15,18,28,.96);border:1px solid var(--line);color:var(--snow);font-size:12.5px;font-weight:600;padding:11px 18px;border-radius:12px;transition:all .3s;z-index:200;pointer-events:none;box-shadow:0 14px 40px -10px rgba(0,0,0,.8)"></div>
+
+<script>
+/* ===================== I18N DICTIONARY ===================== */
+const I18N = {
+  mono:{zh:'禾', en:'H'},
+  intro_tagline:{zh:'感知城市的脉搏 · 这座城市，此刻正在发生什么<br>一款围绕城市生活的探索 / 记录 / 社交应用 · 交互 Demo',
+    en:"Feel the city's pulse — what's happening around you, right now<br>An interactive demo of a city-life app for discovering, journaling and connecting"},
+  line_explore:{zh:'城市活动探索', en:'Discover events'},
+  line_record:{zh:'个人生活记录', en:'Your city journal'},
+  line_social:{zh:'线下活动社交', en:'Meet in person'},
+
+  loc_city:{zh:'上海 · 徐汇', en:'Shanghai · Xuhui'},
+  loc_road:{zh:'衡山路', en:'Hengshan Rd'},
+  search_ph:{zh:'搜活动、场地、或此刻的城市热区', en:'Search events, venues, or live hotspots'},
+  mt_live:{zh:'实时', en:'Live'}, mt_heat:{zh:'热力', en:'Heatmap'},
+  you_here:{zh:'你在这里', en:"You're here"},
+  mt_westbund:{zh:'西岸 <b>+64%</b>', en:'West Bund <b>+64%</b>'},
+  mt_julu:{zh:'巨鹿路 <b>+38%</b>', en:'Julu Rd <b>+38%</b>'},
+  mt_anfu:{zh:'安福路 <b>+27%</b>', en:'Anfu Rd <b>+27%</b>'},
+  leg_peak:{zh:'极活跃', en:'Peak'}, leg_busy:{zh:'活跃', en:'Busy'}, leg_rising:{zh:'升温', en:'Rising'},
+  anomaly_h4:{zh:'西岸艺术区正在异常活跃', en:'West Bund is unusually busy right now'},
+  anomaly_p:{zh:'此刻人流是平日的 <span class="mult">3.2×</span>。「西岸艺博会」预展夜正在进行 — 320m 外，今晚 22:00 截止入场。',
+    en:'Foot traffic is <span class="mult">3.2×</span> the daily norm. West Bund Art Fair preview night is on — 320m away, doors close 22:00.'},
+  sec_live:{zh:'实时 · 附近正在发生', en:'Live · happening nearby'},
+  more_week:{zh:'本周新增 12 →', en:'12 new this week →'},
+
+  tribe_eyebrow:{zh:'同好 · 找到同频的人', en:'Tribe · find your people'},
+  tribe_h1:{zh:'和你一样的人<br>正在城市里相遇', en:'People like you,<br>meeting across the city'},
+  chip_art:{zh:'艺术展', en:'Art shows'}, chip_tech:{zh:'科技分享会', en:'Tech talks'},
+  chip_music:{zh:'Livehouse', en:'Livehouse'}, chip_market:{zh:'城市市集', en:'Markets'},
+  tribe_head:{zh:'和你品味相近的人，本周活跃于', en:'People who share your taste are at, this week'},
+  tribe_sec:{zh:'同好本周活跃于 · 按到访人数排序', en:'Where your tribe is this week · by visitors'},
+  circle_eyebrow:{zh:'线下成圈 · 拼场同行', en:'Go together · offline'},
+  circle_join:{zh:'加入同行', en:'Join them'},
+
+  foot_eyebrow:{zh:'足迹 · 我的城市生活记录', en:'Footprints · your city journal'},
+  foot_h1:{zh:'点亮过的城市', en:"The city you've lit up"},
+  stat_places:{zh:'去过的地点', en:'Places visited'},
+  stat_events:{zh:'参加的活动', en:'Events attended'},
+  stat_corners:{zh:'城市角落', en:'City corners'},
+
+  me_eyebrow:{zh:'我的 · 城市画像与分享', en:'Profile · taste & sharing'},
+  profile_name:{zh:'禾木', en:'Hemu'},
+  profile_meta:{zh:'已点亮 47 地 · 城龄 2 年 3 月', en:'47 places lit · 2 yrs 3 mos in town'},
+  lang_eyebrow:{zh:'界面语言 / Language', en:'Language / 界面语言'},
+  lang_note:{zh:'随时切换中英文 — 整个应用会即时更新', en:'Switch anytime — the whole app updates instantly'},
+  taste_eyebrow:{zh:'你的城市画像 · 越用越懂你', en:'Your city profile · learns as you go'},
+  taste_art:{zh:'当代艺术', en:'Contemporary'}, taste_music:{zh:'独立音乐', en:'Indie music'},
+  taste_tech:{zh:'科技前沿', en:'Tech'}, taste_coffee:{zh:'精品咖啡', en:'Coffee'}, taste_arch:{zh:'城市建筑', en:'Architecture'},
+  taste_note:{zh:'根据你参加的 31 场活动与沿途收藏自动生成，用于推荐与匹配同好',
+    en:'Built from 31 events and saves along the way — powers recommendations and tribe matching'},
+  share_eyebrow:{zh:'分享我的城市生活', en:'Share your city life'},
+  share_desc:{zh:'生成一条链接发给朋友 — 不只是去过哪里，也包括正准备去、即将发生的活动。',
+    en:"Make a link for friends — not just where you've been, but what you're about to go to."},
+  span_week:{zh:'近一周', en:'Past week'}, span_month:{zh:'近一月', en:'Past month'}, span_year:{zh:'近一年', en:'Past year'},
+  opt_fav_t:{zh:'包含「收藏 / 感兴趣」', en:'Include saved / interested'},
+  opt_fav_d:{zh:'展示你标记、但还没去的活动', en:"Things you've marked but haven't been to"},
+  opt_up_t:{zh:'包含「即将参加」', en:'Include upcoming'},
+  opt_up_d:{zh:'未来时段已报名 / 准备去的活动', en:"Events you've booked or plan to attend"},
+  opt_exp_t:{zh:'分享有效期', en:'Link expiry'},
+  opt_exp_d:{zh:'链接 72 小时后自动失效', en:'Link expires after 72 hours'},
+  share_btn:{zh:'预览并生成分享链接', en:'Preview & create share link'},
+
+  route_eyebrow:{zh:'出行 · 选择你的方式', en:'Get there · pick your style'},
+  route_title:{zh:'前往 西岸美术馆', en:'To West Bund Museum'},
+  route_from:{zh:'当前位置', en:'Current location'},
+  route_from_sub:{zh:'衡山路 · 你在这里', en:"Hengshan Rd · you're here"},
+  route_to:{zh:'西岸美术馆', en:'West Bund Museum'},
+  route_to_sub:{zh:'「流动的边界」当代影像展', en:"'Fluid Boundaries' video art"},
+  rm_explore:{zh:'探索模式', en:'Explore'}, rm_explore_sub:{zh:'沿途发现 · 丰富行程', en:'Discover en route'},
+  rm_direct:{zh:'直达模式', en:'Direct'}, rm_direct_sub:{zh:'最短路径 · 高效到达', en:'Shortest path'},
+  poi_eyebrow:{zh:'沿途为你发现 · 兴趣匹配', en:'Found along the way · matched to you'},
+  route_explain:{zh:'这些地点根据你的城市画像（当代艺术 92 / 精品咖啡 64 …）推荐。你自己决定加哪些 — 加入后会编入路线，到访自动计入足迹。',
+    en:'Picked from your city profile (Contemporary 92 / Coffee 64 …). You choose what to add — anything added joins the route and counts toward your footprints.'},
+  route_start_ex:{zh:'开始导航 · 探索这条路线', en:'Start · explore this route'},
+  route_direct_note:{zh:'直达模式已为你选择最短路径 · 步行 18 分钟 1.4km，不打扰、不绕路。',
+    en:'Direct picks the shortest path — an 18-minute, 1.4km walk, no detours.'},
+  route_start_dir:{zh:'开始导航 · 直达', en:'Start · direct'},
+  route_sum_explore:{zh:'<b>探索 27 min</b> · 1.9km · 沿途 4 处', en:'<b>Explore 27 min</b> · 1.9km · 4 stops'},
+  route_sum_direct:{zh:'<b>直达 18 min</b> · 1.4km · 最短路径', en:'<b>Direct 18 min</b> · 1.4km · shortest'},
+
+  share_pv_eyebrow:{zh:'分享预览', en:'Share preview'},
+  share_pv_h2:{zh:'禾木 的城市生活', en:"Hemu's city life"},
+  share_pv_name:{zh:'禾木 的城市生活', en:"Hemu's city life"},
+  pv_foot:{zh:'已点亮的足迹', en:'Footprints'},
+  pv_fav:{zh:'收藏 · 还没去，但很想去', en:'Saved · want to go'},
+  pv_fav_name:{zh:'「时间的形状」UCCA Edge', en:"'Shape of Time' · UCCA Edge"},
+  pv_fav_meta:{zh:'展期至 7.20 · 静安区', en:"Through Jul 20 · Jing'an"},
+  pv_fav_chip:{zh:'收藏', en:'Saved'},
+  pv_up:{zh:'即将参加 · 未来的邀请', en:'Upcoming · an invitation'},
+  pv_up_name:{zh:'西岸艺博会 · 预展夜', en:'West Bund Art Fair · preview'},
+  pv_up_meta:{zh:'本周六 19:00 · 西岸艺术中心 · 你已报名', en:'Sat 19:00 · West Bund Art Centre · booked'},
+  pv_invite:{zh:'＋ 邀请好友本周六共同参加', en:'＋ Invite a friend to join Saturday'},
+  share_copy:{zh:'复制分享链接', en:'Copy share link'},
+  share_pv_hint:{zh:'朋友打开链接即可看到你的城市足迹、收藏与未来计划，并能一键和你约定共同参加。',
+    en:'Friends who open the link see your footprints, saves and plans — and can agree to join you in one tap.'},
+
+  tab_explore:{zh:'探索', en:'Explore'}, tab_tribe:{zh:'同好', en:'Tribe'}, tab_foot:{zh:'足迹', en:'Footprints'}, tab_me:{zh:'我的', en:'Profile'},
+  bottom_hint:{zh:'<b>真实可跳转的多页原型</b> · 点卡片进详情、选「去这里」看路线 · 用浏览器的返回键可逐级后退，链接可直达任意页面 · 照片均从网络实时加载',
+    en:'<b>A real, navigable multi-page prototype</b> · open a card for details, pick "Get there" for the route · your browser Back button steps through pages and links deep-link to any screen · photos load live from the web'},
+
+  /* ---- detail overlay ---- */
+  det_addphoto:{zh:'添加照片', en:'Add photo'},
+  det_feel:{zh:'此刻的感受 · 你的记录', en:'How it felt · your note'},
+  det_voice_add:{zh:'补一段语音', en:'Add a voice note'},
+  det_write:{zh:'写点感受', en:'Write a note'},
+  det_save:{zh:'收藏', en:'Save'},
+  det_attend:{zh:'我要参加', en:'Attend'},
+  det_goroute:{zh:'去这里 · 探索 / 直达 路线', en:'Get there · Explore / Direct'},
+
+  /* ---- toasts ---- */
+  t_join:{zh:'已加入同行 · 已进入活动群聊', en:"Joined · you're in the group chat"},
+  t_playvoice:{zh:'▶ 播放语音笔记', en:'▶ Playing voice note'},
+  t_voiceadd:{zh:'已进入语音记录', en:'Voice recorder opened'},
+  t_writeadd:{zh:'已进入文字记录', en:'Note editor opened'},
+  t_save:{zh:'已收藏 · 已加入「想去」清单', en:'Saved · added to your want-to-go list'},
+  t_attend:{zh:'已报名 · 将编入即将参加', en:'Booked · added to upcoming'},
+  t_poiadd:{zh:'已加入行程 · 路线已更新', en:'Added · route updated'},
+  t_startnav:{zh:'开始导航 · 一路上的发现都会留在足迹里', en:'Navigating · every discovery joins your footprints'},
+  t_invite:{zh:'已生成共同参加邀请 · 等待好友接受', en:'Invitation created · waiting for your friend'},
+  t_copy:{zh:'链接已复制 · 72 小时后失效', en:'Link copied · expires in 72 hours'},
+};
+
+/* ===================== DATA (bilingual) ===================== */
+const EXPLORE = [
+  {id:'expo', ph:'ph-expo',
+    tags:[{cls:'tag-hot', zh:'异常活跃 3.2×', en:'Surge 3.2×'},{cls:'tag-art', zh:'艺术', en:'Art'}],
+    title:{zh:'西岸艺博会 · 预展夜', en:'West Bund Art Fair · Preview'},
+    meta:{zh:['<b>320m</b>','<span class="live">正在进行</span>','22:00 截止'], en:['<b>320m</b>','<span class="live">Live now</span>','Ends 22:00']}},
+  {id:'tech', ph:'ph-rust',
+    tags:[{cls:'tag-tech', zh:'科技', en:'Tech'},{cls:'tag-new', zh:'闭门', en:'Closed-door'}],
+    title:{zh:'AI 与城市：开发者闭门分享', en:'AI & the City: a developer session'},
+    meta:{zh:['1.2km','19:30 开始','32 人参加'], en:['1.2km','Starts 19:30','32 going']}},
+  {id:'lumen', ph:'ph-music',
+    tags:[{cls:'tag-music', zh:'音乐', en:'Music'},{cls:'tag-hot', zh:'升温中', en:'Rising'}],
+    title:{zh:'屋顶电子现场 LUMEN', en:'LUMEN · rooftop electronic set'},
+    meta:{zh:['<b>1.5km</b>','21:00','油罐艺术中心'], en:['<b>1.5km</b>','21:00','Tank Shanghai']}},
+  {id:'book', ph:'ph-book',
+    tags:[{cls:'tag-market', zh:'市集', en:'Market'}],
+    title:{zh:'安福路旧书与黑胶市集', en:'Anfu Rd used-book & vinyl market'},
+    meta:{zh:['800m','今日 11:00–18:00','安福路'], en:['800m','Today 11:00–18:00','Anfu Rd']}},
+  {id:'gallery', ph:'ph-arch',
+    tags:[{cls:'tag-art', zh:'艺术', en:'Art'}],
+    title:{zh:'巨鹿路 758 深夜画廊夜', en:'Julu 758 late-night gallery night'},
+    meta:{zh:['600m','今晚至 23:00','巨鹿路'], en:['600m','Tonight till 23:00','Julu Rd']}},
+];
+
+const ACTS = {
+  expo:{kind:'event', ph:'ph-expo', cat:{zh:'艺术',en:'Art'}, tag:'tag-art',
+    title:{zh:'西岸艺博会 · 预展夜', en:'West Bund Art Fair · Preview'},
+    place:{zh:'西岸艺术中心 · 徐汇', en:'West Bund Art Centre · Xuhui'}, date:{zh:'今晚 18:00 – 22:00', en:'Tonight 18:00 – 22:00'}, dist:'320m',
+    desc:{zh:'140 家画廊、当代影像与限时装置。今晚预展夜人流为平日 3.2 倍 — 你的城市画像匹配度 96%。',
+      en:'140 galleries, video art and timed installations. Tonight is 3.2× the daily crowd — a 96% match to your city profile.'},
+    att:{zh:'已有 38 位与你品味相近的同好计划到访', en:'38 people who share your taste plan to come'}},
+  tech:{kind:'event', ph:'ph-rust', cat:{zh:'科技',en:'Tech'}, tag:'tag-tech',
+    title:{zh:'AI 与城市：开发者闭门分享', en:'AI & the City: a developer session'},
+    place:{zh:'西岸智塔 · 徐汇', en:'AI Tower · Xuhui'}, date:{zh:'今晚 19:30 – 21:30', en:'Tonight 19:30 – 21:30'}, dist:'1.2km',
+    desc:{zh:'本地开发者围绕城市感知、空间计算与端侧模型的小范围深谈。限 40 人。',
+      en:'A small-group deep dive with local developers on city sensing, spatial computing and on-device models. 40 seats.'},
+    att:{zh:'32 位科技发烧友已报名，其中 11 位与你关注重合', en:'32 tech enthusiasts signed up — 11 overlap with your interests'}},
+  lumen:{kind:'event', ph:'ph-music', cat:{zh:'音乐',en:'Music'}, tag:'tag-music',
+    title:{zh:'屋顶电子现场 LUMEN', en:'LUMEN · rooftop electronic set'},
+    place:{zh:'油罐艺术中心 · 徐汇', en:'Tank Shanghai · Xuhui'}, date:{zh:'今晚 21:00 起', en:'Tonight from 21:00'}, dist:'1.5km',
+    desc:{zh:'江边屋顶的电子现场，落日后开场。近一小时人流持续升温，正在接近平日峰值。',
+      en:'A riverside rooftop set opening after sunset. The crowd has climbed for an hour, nearing the daily peak.'},
+    att:{zh:'29 位听同类现场的同好计划到场', en:'29 people who go to sets like this plan to come'}},
+  book:{kind:'event', ph:'ph-book', cat:{zh:'市集',en:'Market'}, tag:'tag-market',
+    title:{zh:'安福路旧书与黑胶市集', en:'Anfu Rd used-book & vinyl market'},
+    place:{zh:'安福路 · 徐汇', en:'Anfu Rd · Xuhui'}, date:{zh:'今日 11:00 – 18:00', en:'Today 11:00 – 18:00'}, dist:'800m',
+    desc:{zh:'梧桐树下的旧书、黑胶与手作摊位，沿街铺开。适合一个没目的地的下午。',
+      en:'Used books, vinyl and handmade stalls under the plane trees. Made for an afternoon with nowhere to be.'},
+    att:{zh:'26 位爱逛市集的同好今日到访', en:'26 market-lovers stopped by today'}},
+  gallery:{kind:'event', ph:'ph-arch', cat:{zh:'艺术',en:'Art'}, tag:'tag-art',
+    title:{zh:'巨鹿路 758 深夜画廊夜', en:'Julu 758 late-night gallery night'},
+    place:{zh:'巨鹿路 758 · 静安', en:"Julu Rd 758 · Jing'an"}, date:{zh:'今晚 至 23:00', en:'Tonight till 23:00'}, dist:'600m',
+    desc:{zh:'多家画廊延长开放的深夜场，可边逛边喝一杯。巨鹿路今晚人流较平日 +38%。',
+      en:'Galleries staying open late, a drink in hand as you browse. Julu Rd is +38% busier than usual tonight.'},
+    att:{zh:'17 位与你品味相近的同好在路上', en:'17 people who share your taste are on the way'}},
+  teamlab:{kind:'record', ph:'ph-teamlab', cat:{zh:'当代艺术',en:'Contemporary'}, tag:'tag-art',
+    title:{zh:'光之乐章 · 沉浸影像', en:'Symphony of Light · immersive'},
+    place:{zh:'teamLab 无界 · 黄浦', en:'teamLab Borderless · Huangpu'}, date:{zh:'5月24日 周六', en:'Sat, May 24'},
+    photos:['ph-teamlab','ph-music','ph-graf'],
+    note:{type:'voice', dur:'0:42'}},
+  rust:{kind:'record', ph:'ph-rust', cat:{zh:'科技',en:'Tech'}, tag:'tag-tech',
+    title:{zh:'Rust 中文社区 Meetup', en:'Rust community meetup'},
+    place:{zh:'张江科学会堂 · 浦东', en:'Zhangjiang Science Hall · Pudong'}, date:{zh:'5月18日 周日', en:'Sun, May 18'},
+    photos:['ph-rust','ph-arch'],
+    note:{type:'text', zh:'第一次现场听懂了「所有权」是怎么回事。散场后和邻座的两个人去喝了酒，聊到地铁停运。',
+      en:'First time I actually understood ownership. Afterwards two of us from the back row went for a drink and talked till the metro stopped.'}},
+  coffee:{kind:'record', ph:'ph-coffee', cat:{zh:'咖啡',en:'Coffee'}, tag:'tag-coffee',
+    title:{zh:'安福路咖啡漫步', en:'Anfu Rd coffee walk'},
+    place:{zh:'安福路 · 徐汇', en:'Anfu Rd · Xuhui'}, date:{zh:'5月11日 周日', en:'Sun, May 11'},
+    photos:['ph-coffee'],
+    note:{type:'text', zh:'梧桐影子落在杯子上的那一刻，决定以后每个周末都要走一段没目的地的路。',
+      en:'The moment the plane-tree shadow fell on the cup, I decided every weekend should have one aimless walk.'}},
+  strawberry:{kind:'record', ph:'ph-music', cat:{zh:'音乐',en:'Music'}, tag:'tag-music',
+    title:{zh:'草莓音乐节 · Day 2', en:'Strawberry Festival · Day 2'},
+    place:{zh:'世博公园 · 浦东', en:'Expo Park · Pudong'}, date:{zh:'4月29日', en:'Apr 29'},
+    photos:['ph-music','ph-graf','ph-teamlab'],
+    note:{type:'voice', dur:'1:18'}},
+};
+
+const FOOT = [
+  {month:{zh:'2026 · 五月', en:'2026 · May'}, items:['teamlab','rust','coffee']},
+  {month:{zh:'2026 · 四月', en:'2026 · April'}, items:['strawberry']},
+];
+const FOOT_EXTRA = {teamlab:0, rust:0, coffee:0, strawberry:5};
+
+const POIS = [
+  {id:'p1', ph:'ph-coffee', cat:{zh:'咖啡',en:'Coffee'}, title:{zh:'% Arabica 衡山路店', en:'% Arabica · Hengshan Rd'}, meta:{zh:['距路线 40m'],en:['40m off route']}, match:88},
+  {id:'p2', ph:'ph-arch', cat:{zh:'建筑',en:'Architecture'}, title:{zh:'武康大楼 · 街景', en:'Wukang Mansion · view'}, meta:{zh:['必经'],en:['on the way']}, match:95},
+  {id:'p3', ph:'ph-book', cat:{zh:'阅读',en:'Books'}, title:{zh:'一条 · 独立书店', en:'Yi Tiao · indie bookshop'}, meta:{zh:['距路线 90m'],en:['90m off route']}, match:91},
+  {id:'p4', ph:'ph-graf', cat:{zh:'街头艺术',en:'Street art'}, title:{zh:'西岸滨江 涂鸦墙', en:'West Bund · graffiti wall'}, meta:{zh:['终点旁'],en:['by the end']}, match:86},
+];
+
+const TRIBE = {
+  art:{input:{zh:'艺术展',en:'Art shows'}, count:412,
+    desc:{zh:'根据你参加过的展览与收藏，找到 <span class="pct">412 位</span>品味高度重合的同好。这是他们本周到访最多的展。',
+      en:'From the shows you\u2019ve attended and saved, we found <span class="pct">412 people</span> with closely matching taste. These are the shows they visited most this week.'},
+    venues:[
+      {ph:'ph-teamlab', name:{zh:'「流动的边界」西岸美术馆',en:"'Fluid Boundaries' · West Bund Museum"}, meta:{zh:'当代影像 · 徐汇',en:'Video art · Xuhui'}, avs:[['#FF5B36','A'],['#8C6BFF','M'],['#27E0BE','Y']], cnt:38},
+      {ph:'ph-music', name:{zh:'teamLab 无界 · 沉浸展',en:'teamLab Borderless · immersive'}, meta:{zh:'数字艺术 · 黄浦',en:'Digital art · Huangpu'}, avs:[['#8C6BFF','K'],['#FFB36b','S']], cnt:21},
+      {ph:'ph-ucca', name:{zh:'「时间的形状」UCCA Edge',en:"'Shape of Time' · UCCA Edge"}, meta:{zh:'群展 · 静安',en:"Group show · Jing'an"}, avs:[['#27E0BE','R'],['#FF5B36','L']], cnt:17},
+    ],
+    circle:{title:{zh:'本周六 14:00 · 西岸美术馆',en:'Sat 14:00 · West Bund Museum'},
+      desc:{zh:'6 位与你品味相近的同好计划同去「流动的边界」，看完约在馆外咖啡聊聊。',en:"6 people with taste like yours plan to see 'Fluid Boundaries' together, then coffee outside after."},
+      cnt:{zh:'+6 位同好计划同去',en:'+6 planning to go'}}},
+  tech:{input:{zh:'科技分享会',en:'Tech talks'}, count:286,
+    desc:{zh:'找到 <span class="pct">286 位</span>和你一样的科技发烧友。这是他们近期最关注、报名最多的活动。',
+      en:'We found <span class="pct">286 tech enthusiasts</span> like you. These are the events they\u2019re watching and signing up for most.'},
+    venues:[
+      {ph:'ph-rust', name:{zh:'AI 与城市 · 开发者闭门分享',en:'AI & the City · developer session'}, meta:{zh:'空间计算 · 西岸智塔',en:'Spatial computing · AI Tower'}, avs:[['#27E0BE','D'],['#8C6BFF','N'],['#FF5B36','T']], cnt:32},
+      {ph:'ph-arch', name:{zh:'端侧大模型 实战工作坊',en:'On-device LLM workshop'}, meta:{zh:'AI · 张江',en:'AI · Zhangjiang'}, avs:[['#FFB36b','P'],['#27E0BE','W']], cnt:24},
+      {ph:'ph-expo', name:{zh:'开源硬件 Hardware Hack',en:'Open-source Hardware Hack'}, meta:{zh:'硬件 · 杨浦',en:'Hardware · Yangpu'}, avs:[['#8C6BFF','H'],['#FF5B36','Z']], cnt:15},
+    ],
+    circle:{title:{zh:'本周三 19:30 · 西岸智塔',en:'Wed 19:30 · AI Tower'},
+      desc:{zh:'5 位关注重合的科技发烧友计划同去闭门分享，会后有自由交流环节。',en:'5 enthusiasts with overlapping interests plan to attend the session, with open mingling after.'},
+      cnt:{zh:'+5 位发烧友计划同去',en:'+5 enthusiasts going'}}},
+  music:{input:{zh:'Livehouse',en:'Livehouse'}, count:331,
+    desc:{zh:'找到 <span class="pct">331 位</span>和你听同一类现场的人。这是他们本周最常出没的场子。',
+      en:'We found <span class="pct">331 people</span> who go to the same kind of shows. These are their most-visited venues this week.'},
+    venues:[
+      {ph:'ph-music', name:{zh:'屋顶电子现场 LUMEN',en:'LUMEN · rooftop electronic'}, meta:{zh:'电子 · 油罐艺术中心',en:'Electronic · Tank Shanghai'}, avs:[['#FF5B36','E'],['#8C6BFF','V']], cnt:29},
+      {ph:'ph-graf', name:{zh:'MAO Livehouse · 后摇之夜',en:'MAO Livehouse · post-rock night'}, meta:{zh:'后摇 · 黄浦',en:'Post-rock · Huangpu'}, avs:[['#27E0BE','J'],['#FFB36b','C']], cnt:18},
+      {ph:'ph-arch', name:{zh:'小酒馆驻场 · 民谣',en:'Tavern residency · folk'}, meta:{zh:'民谣 · 静安',en:"Folk · Jing'an"}, avs:[['#8C6BFF','F']], cnt:12},
+    ],
+    circle:{title:{zh:'本周五 21:00 · 油罐艺术中心',en:'Fri 21:00 · Tank Shanghai'},
+      desc:{zh:'7 位同好计划同去 LUMEN 屋顶现场，已开拼票小群。',en:'7 people plan to catch the LUMEN rooftop set together — a ticket group is already open.'},
+      cnt:{zh:'+7 位同好计划同去',en:'+7 planning to go'}}},
+  market:{input:{zh:'城市市集',en:'Markets'}, count:258,
+    desc:{zh:'找到 <span class="pct">258 位</span>爱逛市集与旧物的人。这是他们本周聚集最多的几处。',
+      en:'We found <span class="pct">258 people</span> who love markets and old things. These are where they gathered most this week.'},
+    venues:[
+      {ph:'ph-book', name:{zh:'安福路旧书与黑胶市集',en:'Anfu Rd book & vinyl market'}, meta:{zh:'旧物 · 徐汇',en:'Vintage · Xuhui'}, avs:[['#FFB36b','O'],['#27E0BE','I']], cnt:26},
+      {ph:'ph-coffee', name:{zh:'愚园路 周末手作市集',en:'Yuyuan Rd weekend craft market'}, meta:{zh:'手作 · 长宁',en:'Crafts · Changning'}, avs:[['#FF5B36','B'],['#8C6BFF','G']], cnt:19},
+      {ph:'ph-graf', name:{zh:'滨江古着 Flea Market',en:'Riverside vintage flea market'}, meta:{zh:'古着 · 杨浦',en:'Vintage · Yangpu'}, avs:[['#27E0BE','Q']], cnt:13},
+    ],
+    circle:{title:{zh:'本周日 11:00 · 安福路',en:'Sun 11:00 · Anfu Rd'},
+      desc:{zh:'4 位同好约着一起逛市集淘黑胶，中午拼桌吃饭。',en:'4 people are meeting to dig for vinyl together, then a shared lunch.'},
+      cnt:{zh:'+4 位同好计划同去',en:'+4 planning to go'}}},
+};
+
+/* ===================== STATE & HELPERS ===================== */
+let lang = 'zh';
+let curTopic = 'art', curRouteMode = 'explore', curSpan = 'month', curDetail = null;
+let added = {}, addedCount = 0;
+
+function L(v){ return (v && typeof v==='object' && v.zh!==undefined) ? v[lang] : v; }
+function K(k){ return I18N[k] ? I18N[k][lang] : k; }
+function ppl(n){ return lang==='zh' ? (n+'位') : (n+''); }
+
+function waveBars(n){let s='';for(let i=0;i<n;i++){s+='<span style="height:'+(20+Math.round(Math.sin(i*1.3)*9+(i*37%30)))+'%"></span>';}return s;}
+
+function noteHTML(note){
+  if(note.type==='voice') return '<div class="note"><div class="voicebtn" onclick="event.stopPropagation();toast(K(\'t_playvoice\'))"><svg width="12" height="12" viewBox="0 0 24 24" fill="#062b25"><path d="M8 5v14l11-7z"/></svg></div><div class="wave">'+waveBars(26)+'</div><span class="dur">'+note.dur+'</span></div>';
+  return '<div class="note text"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" style="flex:none;margin-top:1px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><p>\u201C'+L(note)+'\u201D</p></div>';
+}
+
+/* ===================== RENDERERS ===================== */
+function renderExplore(){
+  document.getElementById('explore-feed').innerHTML = EXPLORE.map(a=>`
+    <div class="act card" onclick="navigate('detail/${a.id}')">
+      <div class="thumb ph ${a.ph}"></div>
+      <div class="body">
+        <div class="row1">${a.tags.map(t=>`<span class="chip ${t.cls}">${t[lang]}</span>`).join('')}</div>
+        <h3>${L(a.title)}</h3>
+        <div class="meta">${L(a.meta).join('<span>·</span>')}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderFoot(){
+  document.getElementById('foot-timeline').innerHTML = FOOT.map(m=>`
+    <div class="tl-month">${L(m.month)}</div>
+    ${m.items.map(id=>{const it=ACTS[id];const ex=FOOT_EXTRA[id]||0;return `
+      <div class="tl-item" onclick="navigate('detail/${id}')">
+        <div class="tl-rail"><div class="node"></div><div class="line"></div></div>
+        <div class="tl-card card" style="padding:13px">
+          <div class="date">${L(it.date)}</div>
+          <div class="head"><span class="chip ${it.tag}">${L(it.cat)}</span><h3>${L(it.title)}</h3></div>
+          <div class="place"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--mist)" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>${L(it.place)}</div>
+          <div class="tl-photos">${it.photos.map(p=>`<div class="ph ${p}"></div>`).join('')}${ex?`<div class="ph more">+${ex}</div>`:''}</div>
+          ${noteHTML(it.note)}
+        </div>
+      </div>`;}).join('')}`).join('');
+}
+
+function setTribe(topic){
+  curTopic = topic;
+  const d = TRIBE[topic];
+  document.querySelectorAll('#tribe-chips button').forEach(b=>b.classList.toggle('on', b.dataset.topic===topic));
+  document.getElementById('tribe-input').value = L(d.input);
+  document.getElementById('tribe-head').innerHTML = `<h3>${K('tribe_head')}</h3><p>${L(d.desc)}</p>`;
+  document.getElementById('tribe-list').innerHTML = d.venues.map((v,i)=>`
+    <div class="venue card" data-nm="${L(v.name)}" onclick="venueTap(this)">
+      <span class="rank">${String(i+1).padStart(2,'0')}</span>
+      <div class="thumb ph ${v.ph}"></div>
+      <div class="body"><h4>${L(v.name)}</h4><div class="meta">${L(v.meta)}</div></div>
+      <div class="avstack">${v.avs.map(a=>`<i style="background:${a[0]}">${a[1]}</i>`).join('')}<span class="cnt">${ppl(v.cnt)}</span></div>
+    </div>`).join('');
+  document.getElementById('circle-title').textContent = L(d.circle.title);
+  document.getElementById('circle-desc').textContent = L(d.circle.desc);
+  document.getElementById('circle-cnt').textContent = L(d.circle.cnt);
+}
+function venueTap(el){ toast((lang==='zh'?'查看 ':'View ') + el.dataset.nm + (lang==='zh'?' · 同好动态':' · tribe activity')); }
+
+function renderPoi(){
+  document.getElementById('poi-list').innerHTML = POIS.map(p=>`
+    <div class="poi card">
+      <div class="thumb ph ${p.ph}"></div>
+      <div class="body"><h4>${L(p.title)}</h4><div class="meta">${L(p.cat)} · ${L(p.meta).join(' · ')}<span class="m">${lang==='zh'?'匹配 ':'match '}${p.match}%</span></div></div>
+      <div class="add ${added[p.id]?'added':''}" id="add-${p.id}" onclick="togglePoi('${p.id}')">${added[p.id]?'\u2713':'\uFF0B'}</div>
+    </div>`).join('');
+  updatePoiCount();
+}
+function updatePoiCount(){
+  document.getElementById('poi-count').textContent = lang==='zh' ? ('已加入 '+addedCount+' 处') : (addedCount+' added');
+}
+function togglePoi(id){
+  added[id]=!added[id];
+  addedCount = Object.values(added).filter(Boolean).length;
+  const el=document.getElementById('add-'+id);
+  el.classList.toggle('added', added[id]); el.textContent = added[id]?'\u2713':'\uFF0B';
+  updatePoiCount();
+  if(added[id]) toast(K('t_poiadd'));
+}
+
+/* ---- DETAIL ---- */
+function openDetail(id){
+  const a = ACTS[id]; if(!a) return;
+  curDetail = id;
+  let inner = `
+    <div class="ov-hero"><div class="ph ${a.ph}"></div><div class="scrim"></div>
+      <div class="ov-bar" style="position:absolute;top:0;left:0;right:0;background:none">
+        <span class="chip ${a.tag}">${L(a.cat)}</span>
+        <div class="ov-close" onclick="closeTo()">✕</div>
+      </div>
+    </div>
+    <div class="ov-body">
+      <h1>${L(a.title)}</h1>
+      <div class="ov-meta">
+        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--haze)" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/></svg>${L(a.place)}</span>
+        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--haze)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${L(a.date)}</span>
+        ${a.dist?`<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--haze)" stroke-width="2"><path d="M4 12h16M14 6l6 6-6 6"/></svg>${a.dist}</span>`:''}
+      </div>`;
+
+  if(a.kind==='record'){
+    const photoLab = lang==='zh' ? ('现场 · 你拍的 '+a.photos.length+' 张') : ('On site · '+a.photos.length+' photos');
+    const nth = id==='teamlab' ? '31' : '—';
+    const counted = lang==='zh' ? ('已计入你的城市足迹 · 第 '+nth+' 场') : ('Logged to your footprints · #'+nth);
+    inner += `
+      <div class="ov-sec-lab">${photoLab}</div>
+      <div class="ov-gallery">${a.photos.map(p=>`<div class="ph ${p}"></div>`).join('')}<div class="ph" style="background:var(--ink-700);display:grid;place-items:center;width:120px;height:150px;border-radius:14px"><div style="text-align:center;color:var(--mist)"><div style="font-size:22px">\uFF0B</div><div style="font-size:10px;margin-top:4px">${K('det_addphoto')}</div></div></div></div>
+      <div class="ov-sec-lab">${K('det_feel')}</div>
+      <div style="margin-bottom:16px">${noteHTML(a.note)}</div>
+      <div class="ov-actions">
+        <button class="btn btn-ghost" onclick="toast(K('t_voiceadd'))"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:6px"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>${K('det_voice_add')}</button>
+        <button class="btn btn-ghost" onclick="toast(K('t_writeadd'))"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:6px"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>${K('det_write')}</button>
+      </div>
+      <div class="attendees"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><path d="M9 10l2 2 4-4"/></svg><div style="flex:1;font-size:12px;color:var(--haze)">${counted}</div></div>`;
+  } else {
+    inner += `
+      <p style="font-size:13px;color:var(--haze);line-height:1.65;margin-bottom:16px">${L(a.desc)}</p>
+      <div class="attendees" style="border-color:rgba(140,107,255,.3);background:rgba(140,107,255,.08)">
+        <div class="avstack"><i style="background:#FF5B36;width:24px;height:24px;border:2px solid var(--ink-700)">A</i><i style="background:#8C6BFF;width:24px;height:24px;border:2px solid var(--ink-700)">M</i><i style="background:#27E0BE;width:24px;height:24px;border:2px solid var(--ink-700)">Y</i></div>
+        <div style="flex:1;font-size:12px;color:#b9a6ff">${L(a.att)}</div>
+      </div>
+      <div class="mini-map"><svg viewBox="0 0 320 118" preserveAspectRatio="xMidYMid slice"><rect width="320" height="118" fill="#070A12"/><g stroke="#1b2440" stroke-width="2" fill="none"><path d="M-10 40 L330 36"/><path d="M-10 86 L330 92"/><path d="M120 -10 L130 130"/></g><path d="M30 95 C 90 70, 120 60, 230 40" fill="none" stroke="#27E0BE" stroke-width="2" stroke-dasharray="3 5" opacity=".6"/><g transform="translate(30,95)"><circle r="5" fill="#27E0BE"/></g><g transform="translate(230,40)"><circle class="pin-ring" r="9" fill="none" stroke="#FF5B36" stroke-width="2"/><circle r="6" fill="#FF5B36"/></g></svg></div>
+      <div class="ov-actions">
+        <button class="btn btn-ghost" onclick="toast(K('t_save'))"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:6px"><path d="M12 21l-1.4-1.3C5.4 15 2 11.9 2 8.2 2 5.5 4.1 3.5 6.8 3.5c1.5 0 3 .7 4 1.9 1-1.2 2.5-1.9 4-1.9 2.7 0 4.8 2 4.8 4.7 0 3.7-3.4 6.8-8.6 11.5z"/></svg>${K('det_save')}</button>
+        <button class="btn" onclick="toast(K('t_attend'))">${K('det_attend')}</button>
+        <button class="btn fullw" style="background:var(--coral)" onclick="navigate('route')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="vertical-align:-3px;margin-right:7px"><path d="M9 20l-5.5 2 2-6.5L17 3l4 4z"/><path d="M9 14l6-6"/></svg>${K('det_goroute')}</button>
+      </div>`;
+  }
+  inner += `</div>`;
+  const ov = document.getElementById('ov-detail');
+  ov.innerHTML = inner;
+  hydrateImages(ov);
+}
+
+/* ===================== REAL NETWORK PHOTOS ===================== */
+const U = id => `https://images.unsplash.com/${id}?w=720&q=70&auto=format&fit=crop`;
+const PH2IMG = {
+  'ph-teamlab': U('photo-1748525938712-a065b4396ba4'),  // glowing colour light installation
+  'ph-expo':    U('photo-1764692468585-e2c615a10882'),  // abstract red geometric reflections
+  'ph-ucca':    U('photo-1730917643616-3c73cc31d68a'),  // crowd before a blue wall
+  'ph-arch':    U('photo-1486406146926-c627a92ad1ab'),  // low-angle high-rise
+  'ph-book':    U('photo-1569728723358-d1a317aa7fba'),  // books on a shelf
+  'ph-graf':    U('photo-1487452066049-a710f7296400'),  // street art / mural
+  'ph-music':   U('photo-1540039155733-5bb30b53aa14'),  // crowd facing a lit stage
+  'ph-rust':    U('photo-1540575467063-178a50c2df87'),  // conference audience
+  'ph-coffee':  U('photo-1609050471053-8636409f9f5b'),  // coffee, dark ceramic
+};
+function hydrateImages(root){
+  (root||document).querySelectorAll('.ph').forEach(el=>{
+    if(el.dataset.hydrated) return;
+    let url=null;
+    el.classList.forEach(c=>{ if(PH2IMG[c]) url=PH2IMG[c]; });
+    if(!url) return;
+    el.dataset.hydrated='1';
+    const img=new Image();
+    img.className='rimg'; img.alt=''; img.referrerPolicy='no-referrer'; img.loading='lazy';
+    img.onload=()=>img.classList.add('on');
+    img.onerror=()=>img.remove();   // graceful fallback to the gradient
+    img.src=url;
+    el.insertBefore(img, el.firstChild);
+  });
+}
+
+/* ===================== ROUTER (real multi-page nav) ===================== */
+let baseRoute='explore';
+const ACC={explore:'coral',tribe:'violet',foot:'cyan',me:'snow'};
+const COLOR={coral:'var(--coral)',violet:'var(--violet)',cyan:'var(--cyan)',snow:'var(--snow)'};
+const SOFT={coral:'rgba(255,91,54,.14)',violet:'rgba(140,107,255,.16)',cyan:'rgba(39,224,190,.14)',snow:'rgba(233,237,249,.12)'};
+
+function navigate(h){ location.hash = '#/'+h; }              // pushes a history entry
+function closeTo(){ history.replaceState(null,'','#/'+(baseRoute||'explore')); route(); }
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>{ s.classList.remove('active'); s.scrollTop=0; });
+  const el=document.getElementById('s-'+name); if(el) el.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  const tb=document.getElementById('tab-'+name); if(tb) tb.classList.add('on');
+  const acc=ACC[name]||'coral', app=document.getElementById('app');
+  app.style.setProperty('--accent', COLOR[acc]);
+  app.style.setProperty('--accent-soft', SOFT[acc]);
+}
+function setOverlay(id){
+  ['ov-detail','ov-route','ov-share'].forEach(o=>{
+    const el=document.getElementById(o), on=(o===id);
+    el.classList.toggle('open', on);
+    if(on) el.scrollTop=0;
+  });
+  if(id!=='ov-detail') curDetail=null;
+}
+function route(){
+  const parts=(location.hash||'').replace(/^#\/?/,'').split('/').filter(Boolean);
+  const head=parts[0]||'explore';
+  if(['explore','tribe','foot','me'].includes(head)){
+    baseRoute=head; showScreen(head); setOverlay(null);
+  } else if(head==='detail' && parts[1] && ACTS[parts[1]]){
+    showScreen(baseRoute); openDetail(parts[1]); setOverlay('ov-detail');
+  } else if(head==='route'){
+    showScreen(baseRoute); setRoute(curRouteMode); setOverlay('ov-route');
+  } else if(head==='share'){
+    showScreen(baseRoute); refreshShare(); setOverlay('ov-share');
+  } else {
+    baseRoute='explore'; showScreen('explore'); setOverlay(null);
+  }
+}
+window.addEventListener('hashchange', route);
+
+function setMap(mode){
+  const w=document.getElementById('mapwrap');
+  w.classList.toggle('map-mode-heat', mode==='heat');
+  w.classList.toggle('map-mode-pins', mode==='pins');
+  document.getElementById('mt-live').classList.toggle('on', mode==='pins');
+  const h=document.getElementById('mt-heat'); h.classList.toggle('on', mode==='heat'); h.classList.toggle('heat', mode==='heat');
+  document.querySelectorAll('.heat-only').forEach(e=>e.style.display = mode==='heat'?'':'none');
+}
+
+function setRoute(mode){
+  curRouteMode = mode;
+  const ex = mode==='explore';
+  document.getElementById('rm-explore').classList.toggle('on', ex);
+  document.getElementById('rm-direct').classList.toggle('on', !ex);
+  document.getElementById('path-explore').style.opacity = ex?'1':'0';
+  document.getElementById('path-direct').style.opacity = ex?'0':'1';
+  document.getElementById('poi-markers').style.opacity = ex?'1':'0';
+  document.getElementById('route-explore-body').style.display = ex?'':'none';
+  document.getElementById('route-direct-body').style.display = ex?'none':'';
+  document.getElementById('route-summary').innerHTML = ex ? K('route_sum_explore') : K('route_sum_direct');
+}
+function startRoute(){ toast(K('t_startnav')); closeTo(); }
+
+function setSpan(span){
+  curSpan = span;
+  document.querySelectorAll('#share-seg button').forEach(b=>b.classList.toggle('on', b.dataset.span===span));
+  const zh={week:'近一周 · 2 场足迹 · 1 个收藏 · 1 场即将', month:'近一月 · 6 场足迹 · 3 个收藏 · 2 场即将', year:'近一年 · 31 场足迹 · 14 个收藏 · 5 场即将'};
+  const en={week:'Past week · 2 visits · 1 saved · 1 upcoming', month:'Past month · 6 visits · 3 saved · 2 upcoming', year:'Past year · 31 visits · 14 saved · 5 upcoming'};
+  document.getElementById('pv-span').textContent = (lang==='zh'?zh:en)[span];
+}
+function tg(id){
+  document.getElementById(id).classList.toggle('on');
+  if(id==='tg-fav') document.getElementById('pv-fav').style.display = document.getElementById(id).classList.contains('on')?'':'none';
+  if(id==='tg-up') document.getElementById('pv-up').style.display = document.getElementById(id).classList.contains('on')?'':'none';
+}
+function refreshShare(){
+  setSpan(curSpan);
+  document.getElementById('pv-fav').style.display = document.getElementById('tg-fav').classList.contains('on')?'':'none';
+  document.getElementById('pv-up').style.display = document.getElementById('tg-up').classList.contains('on')?'':'none';
+}
+
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg;
+  t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
+  clearTimeout(toastT); toastT=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)';},1900);
+}
+
+/* ===================== LANGUAGE ===================== */
+function applyLang(){
+  document.documentElement.lang = lang==='zh' ? 'zh-CN' : 'en';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.dataset.i18n; if(I18N[k]) el.textContent = I18N[k][lang]; });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{ const k=el.dataset.i18nHtml; if(I18N[k]) el.innerHTML = I18N[k][lang]; });
+  document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on', b.dataset.lang===lang));
+  renderExplore(); renderFoot(); renderPoi();
+  setTribe(curTopic); setRoute(curRouteMode); setSpan(curSpan);
+  hydrateImages(document);
+  if(typeof route==='function') route();   // re-render current page (rebuilds open detail in new language)
+}
+function setLang(l){ lang=l; applyLang(); }
+
+/* ===================== INIT ===================== */
+applyLang();
+if(!location.hash) history.replaceState(null,'','#/explore');
+route();
+hydrateImages(document);
+</script>
+</body>
+</html>
